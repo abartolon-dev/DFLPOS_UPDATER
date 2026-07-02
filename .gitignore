@@ -1,0 +1,162 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.pdb
+*.ipch
+*.sdf
+*.opensdf
+*.opendb
+*.dbmdl
+*.tmp
+*.tmp_proj
+*.log
+*.tlog
+*.aps
+*.ncb
+*.obj
+*.o
+*.pidb
+*.psess
+*.vsp
+*.vspx
+*.sbr
+*.bsc
+*.ilk
+*.meta
+*.tlb
+*.tlh
+*.exp
+*.lib
+*.res
+*.resources
+*.dll
+*.exe
+*.exe.config
+*.dll.config
+*.pdb
+*.mdb
+*.cache
+*.generated.cs
+*.Designer.cs
+*.docstates
+*.crunch
+
+# Build results
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+[Bb]uild/
+[Ll]og/
+[Pp]ackages/
+*.NuGet.config
+packages/
+*.nupkg
+*.snupkg
+
+# Visual Studio Code
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.vspscc
+*.vssscc
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Mono auto generated files
+mono_crash.*
+
+# ASP.NET / Web
+App_Data/
+*.log
+*.temp
+*.cache
+*.local
+*.settings
+*.config.local
+
+# Entity Framework
+*.edmx
+*.edmx.diagram
+*.edmx.schema
+*.edmx.tt
+*.edmx.dbml
+
+# Node.js (si usas herramientas front-end)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# SQL Server / Database
+*.mdf
+*.ldf
+*.dbmdl
+*.dbproj.schema*
+*.dbproj.user
+*.sqlproj.user
+*.sqlproj.dbmdl
+*.sqlproj.schema*
+
+# Migrations? (si son generadas automáticamente, podrías ignorarlas; si son manuales, no)
+# Migrations/
+# *.Migration.cs
+
+# Publishing / Publish profiles
+*.pubxml
+*.pubxml.user
+*.publishproj
+*.deploy.cmd
+*.deploy-readme.txt
+
+# Azure
+*.azurePubxml
+*.azurePubxml.user
+*.azurePubxml.proj.user
+*.azurePubxml.proj
+
+# Coverage / Test results
+TestResults/
+*.coverage
+*.coveragexml
+*.trx
+*.testresult
+*.TestResults
+
+# Temporary files
+*.tmp
+*.temp
+*.~*
+*~
+
+# Windows image cache
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+
+# Docker (si usas)
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+# Your custom folders (optional: if you want to ignore ScriptsDatabase output, uncomment)
+# ScriptsDatabase/output/
+# ScriptsDatabase/backup/
