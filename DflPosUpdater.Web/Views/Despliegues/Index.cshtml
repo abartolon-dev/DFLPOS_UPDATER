@@ -1,0 +1,50 @@
+@model IEnumerable<Despliegue>
+@{
+    ViewData["Title"] = "Despliegues";
+}
+
+<h1 class="h3 mb-3">Despliegues</h1>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 js-datatable">
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Versión</th>
+                <th>Sucursal</th>
+                <th>Estado</th>
+                <th>Intentos</th>
+                <th>Job</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@item.VersionApp?.NumeroVersion</td>
+                    <td>@item.Sucursal?.Nombre</td>
+                    <td><span class="badge @CssEstado(item.Estado)">@item.Estado</span></td>
+                    <td>@item.Intentos</td>
+                    <td>@item.HangfireJobId</td>
+                    <td><a asp-action="Detalle" asp-route-id="@item.Id">Ver</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    string CssEstado(DespliegueEstado estado) => estado switch
+    {
+        DespliegueEstado.Exitoso => "text-bg-success",
+        DespliegueEstado.Fallido => "text-bg-danger",
+        DespliegueEstado.EnProceso => "text-bg-warning",
+        DespliegueEstado.Reintentando => "text-bg-info",
+        DespliegueEstado.Cancelado => "text-bg-secondary",
+        _ => "text-bg-light text-dark"
+    };
+}

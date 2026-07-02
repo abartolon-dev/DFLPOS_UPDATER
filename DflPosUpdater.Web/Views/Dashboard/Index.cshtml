@@ -1,0 +1,90 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h3">Panel de administración</h1>
+        <p class="text-muted mb-0">Control de versiones y despliegues de DFL POS.</p>
+    </div>
+    <a class="btn btn-primary" asp-controller="Versiones" asp-action="Crear">Subir nueva versión</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card metric-card">
+            <div class="card-body">
+                <div class="text-muted">Versión publicada</div>
+                <div class="fs-4 fw-bold">@(Model.VersionPublicada?.NumeroVersion ?? "N/A")</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card metric-card">
+            <div class="card-body">
+                <div class="text-muted">Sucursales activas</div>
+                <div class="fs-4 fw-bold">@Model.TotalSucursalesActivas</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card metric-card">
+            <div class="card-body">
+                <div class="text-muted">Fallidos</div>
+                <div class="fs-4 fw-bold text-danger">@Model.DesplieguesFallidos</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card metric-card">
+            <div class="card-body">
+                <div class="text-muted">En proceso</div>
+                <div class="fs-4 fw-bold text-warning">@Model.DesplieguesEnProceso</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Despliegues recientes</div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 js-datatable">
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Versión</th>
+                <th>Sucursal</th>
+                <th>Estado</th>
+                <th>Intentos</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.DesplieguesRecientes)
+            {
+                <tr>
+                    <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@item.VersionApp?.NumeroVersion</td>
+                    <td>@item.Sucursal?.Nombre</td>
+                    <td><span class="badge @CssEstado(item.Estado)">@item.Estado</span></td>
+                    <td>@item.Intentos</td>
+                    <td><a asp-controller="Despliegues" asp-action="Detalle" asp-route-id="@item.Id">Ver</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    string CssEstado(DespliegueEstado estado) => estado switch
+    {
+        DespliegueEstado.Exitoso => "text-bg-success",
+        DespliegueEstado.Fallido => "text-bg-danger",
+        DespliegueEstado.EnProceso => "text-bg-warning",
+        DespliegueEstado.Reintentando => "text-bg-info",
+        DespliegueEstado.Cancelado => "text-bg-secondary",
+        _ => "text-bg-light text-dark"
+    };
+}

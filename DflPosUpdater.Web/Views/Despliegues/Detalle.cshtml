@@ -1,0 +1,67 @@
+@model DespliegueDetalleViewModel
+@{
+    ViewData["Title"] = "Detalle de despliegue";
+    var despliegue = Model.Despliegue;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h3">Despliegue #@despliegue.Id</h1>
+        <div class="text-muted">@despliegue.VersionApp?.NumeroVersion - @despliegue.Sucursal?.Nombre</div>
+    </div>
+    <div class="d-flex gap-2">
+        <form asp-action="Reintentar" asp-route-id="@despliegue.Id" method="post" data-confirm="true" data-confirm-title="Reintentar despliegue" data-confirm-text="Se volvera a ejecutar el job de esta sucursal." data-confirm-button="Si, reintentar">
+            <button type="submit" class="btn btn-warning">Reintentar</button>
+        </form>
+        <form asp-action="Cancelar" asp-route-id="@despliegue.Id" method="post" data-confirm="true" data-confirm-title="Cancelar despliegue" data-confirm-text="El despliegue quedara marcado como cancelado." data-confirm-button="Si, cancelar">
+            <button type="submit" class="btn btn-outline-danger">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Estado</div><div class="fw-bold">@despliegue.Estado</div></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Intentos</div><div class="fw-bold">@despliegue.Intentos</div></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Job Hangfire</div><div class="fw-bold">@despliegue.HangfireJobId</div></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Fin</div><div class="fw-bold">@despliegue.FechaFin?.ToString("yyyy-MM-dd HH:mm")</div></div></div></div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(despliegue.MensajeError))
+{
+    <div class="alert alert-danger"><strong>Error:</strong> @despliegue.MensajeError</div>
+}
+
+<div class="card mb-4">
+    <div class="card-header">Rutas remotas</div>
+    <div class="card-body">
+        <div><strong>Carpeta version:</strong> <code>@(despliegue.RutaRemotaCarpeta ?? despliegue.RutaRemotaZip)</code></div>
+        <div><strong>Manifest:</strong> <code>@despliegue.RutaRemotaManifest</code></div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Logs</div>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0 js-datatable">
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Mensaje</th>
+                <th>Detalle</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var log in Model.Logs)
+            {
+                <tr>
+                    <td>@log.Fecha.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@log.Tipo</td>
+                    <td>@log.Mensaje</td>
+                    <td><pre class="small mb-0">@log.Detalle</pre></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

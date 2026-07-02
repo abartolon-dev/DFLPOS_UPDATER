@@ -1,0 +1,50 @@
+@model IEnumerable<Sucursal>
+@{
+    ViewData["Title"] = "Sucursales";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Sucursales</h1>
+    <a class="btn btn-primary" asp-action="Crear">Nueva sucursal</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table id="tblSucursales" class="table table-hover mb-0">
+            <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>FTP</th>
+                <th>Ruta</th>
+                <th>Activa</th>
+                <th>Última versión</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Codigo</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.HostFtp:@item.PuertoFtp</td>
+                    <td>@item.RutaDestino</td>
+                    <td>@(item.Activa ? "Sí" : "No")</td>
+                    <td>@item.UltimaVersionInstalada</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+                        <form asp-action="CambiarEstado" asp-route-id="@item.Id" method="post" class="d-inline" data-confirm="true" data-confirm-title="Cambiar estado" data-confirm-text="Se modificara el estado activo/inactivo de esta sucursal." data-confirm-button="Si, continuar">
+                            <button type="submit" class="btn btn-sm btn-outline-warning">@(item.Activa ? "Desactivar" : "Activar")</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Sucursales/Index.js" asp-append-version="true"></script>
+}

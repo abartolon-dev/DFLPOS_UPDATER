@@ -1,0 +1,53 @@
+@model IEnumerable<VersionApp>
+@{
+    ViewData["Title"] = "Configuracion de archivos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h3">Configuracion de archivos</h1>
+        <div class="text-muted">Administra los archivos que debe contener la carpeta de cada version.</div>
+    </div>
+    <a class="btn btn-primary" asp-controller="Versiones" asp-action="Crear">Crear version</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 js-datatable">
+            <thead>
+            <tr>
+                <th>Version</th>
+                <th>Estado</th>
+                <th>Archivos</th>
+                <th>Tamano total</th>
+                <th>Carpeta local</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var version in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@version.NumeroVersion</td>
+                    <td>@version.Estado</td>
+                    <td>@version.TotalArchivos</td>
+                    <td>@FormatBytes(version.TamanoBytes)</td>
+                    <td><code>@version.RutaCarpeta</code></td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-primary" asp-action="Editar" asp-route-id="@version.Id">Configurar</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    string FormatBytes(long bytes)
+    {
+        if (bytes >= 1024 * 1024) return $"{bytes / 1024d / 1024d:N2} MB";
+        if (bytes >= 1024) return $"{bytes / 1024d:N2} KB";
+        return $"{bytes} B";
+    }
+}
