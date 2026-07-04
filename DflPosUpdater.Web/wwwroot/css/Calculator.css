@@ -1,0 +1,133 @@
+﻿#calculator {
+    background: white;
+    font-size: 24px;
+    text-align: center;
+    padding: 10px 0;
+    box-shadow: 0 0 40px rgba(0,0,0,.15);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 309px;
+    height: 400px;
+}
+
+#calculator .row {
+    width: 90%;
+    margin: 10px auto;
+}
+
+#calculator .row:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+#calculator [class^="col-"] {
+    float: left;
+}
+
+#calculator [class^="col-"]:not(:last-child) {
+    margin-right: 10px;
+}
+
+#calculator .col-3 {
+    width: calc((100% - 30px)/4);
+}
+
+#calculator .col-9 {
+    width: calc((3*(100% - 30px)/4) + 20px);
+}
+
+#calculator .col-6 {
+    width: calc(96.4% / 2);
+}
+
+#calculator input {
+    border: none;
+    background: #D7A897;
+    height: 50px;
+    width: 81%;
+    border-radius: 4px;
+    margin: 10px -5px;
+    color: white;
+    padding: 0 10px;
+}
+
+#calculator .secondaryInput {
+    border: none !important;
+    background: #D7A897 !important;
+    height: 50px !important;
+    width: 10% !important;
+    border-radius: 4px !important;
+    margin: 10px -6px !important;
+    color: white !important;
+    padding: 0 0px !important;
+    font-size: 24px !important;
+}
+
+#calculator input:focus {
+    outline: none;
+}
+
+#calculator .btn {
+    width: 100%;
+    padding: 10px;
+    color: #2d3436;
+    background: white;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 15px 16px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+
+#calculator .btn:focus {
+    outline: none;
+}
+
+#calculator .btn:active {
+    transform: translateY(4px);
+}
+
+#calculator .btn-clear {
+    background: #71451A;
+    color: white;
+}
+
+#calculator .btn-equal, #calculator .btn-add, #calculator .btn-minus, #calculator .btn-multiply, #calculator .btn-divide {
+    color: white;
+    background: #224191;
+}
+
+    #calculator .btn-history {
+        color: white;
+        background: #71451A;
+    }
+
+#calculator #close-calculator {
+    background: #8A171A;
+    color: white;
+}
+
+#calculator .idHistory {
+    position: absolute;
+    display: block;
+    margin-top: -315px;
+    margin-left: -195px;
+    width: 60%;
+    height: 220px;
+    background-color: #EAEDED;
+    border-radius: 15px;
+    font-size: 11px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#calculator .collapseHistory:before {
+    border: 25px solid white;
+    content: '';
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    position: absolute;
+    bottom: 264px;
+    left: calc(50% - 165px);
+    border-left-color: #EAEDED;
+}

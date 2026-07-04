@@ -3,6 +3,143 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<div class="content animate-panel">
+
+    <div class="row">
+        <div class="col-lg-12 text-center welcome-message">
+            <h2>
+                <strong>PANEL DE ADMINISTRACION</strong>
+            </h2>
+
+            <p>
+                Control de versiones y despliegues de DFLPOS.
+            </p>
+        </div>
+    </div>
+    <div class="row projects">
+        <div class="col-lg-3">
+            <div class="hpanel hgreen">
+                <div class="panel-body">
+                    @* <span class="label label-success pull-right">Subir nueva version</span> *@
+                    <div class="pull-right">                     
+                        <a class="btn btn-default btn-xs" asp-controller="Versiones" asp-action="Crear"> <i class="fa fa-plus"></i> Nueva version</a>                     
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h4><a href="">Ultima Version publicada</a></h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 project-info">
+
+                        <div class="project-value text-center">
+                            <h2 class="text-success">
+                                @(Model.VersionPublicada?.NumeroVersion ?? "N/A")
+                            </h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="hpanel hblue">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h4><a href=""> Sucursales activas</a></h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 project-info">
+
+                        <div class="project-value text-center">
+                            <h2 class="text-info">
+                                @Model.TotalSucursalesActivas
+                            </h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="hpanel hred">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h4><a href=""> Fallidos</a></h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 project-info">
+
+                        <div class="project-value text-center">
+                            <h2 class="text-danger">
+                                @Model.DesplieguesFallidos
+                            </h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="hpanel hyellow">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h4><a href=""> En proceso</a></h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 project-info">
+
+                        <div class="project-value text-center">
+                            <h2 class="text-warning">
+                                @Model.DesplieguesEnProceso
+                            </h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 js-datatable">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Versión</th>
+                            <th>Sucursal</th>
+                            <th>Estado</th>
+                            <th>Intentos</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DesplieguesRecientes)
+                        {
+                            <tr>
+                                <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@item.VersionApp?.NumeroVersion</td>
+                                <td>@item.Sucursal?.Nombre</td>
+                                <td><span class="@CssEstado(item.Estado)">@item.Estado</span></td>
+                                <td>@item.Intentos</td>
+                                <td><a asp-controller="Despliegues" asp-action="Detalle" asp-route-id="@item.Id">Ver</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@*
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
         <h1 class="h3">Panel de administración</h1>
@@ -46,6 +183,8 @@
     </div>
 </div>
 
+
+
 <div class="card">
     <div class="card-header">Despliegues recientes</div>
     <div class="table-responsive">
@@ -76,14 +215,14 @@
         </table>
     </div>
 </div>
-
+ *@
 @functions {
     string CssEstado(DespliegueEstado estado) => estado switch
     {
-        DespliegueEstado.Exitoso => "text-bg-success",
-        DespliegueEstado.Fallido => "text-bg-danger",
-        DespliegueEstado.EnProceso => "text-bg-warning",
-        DespliegueEstado.Reintentando => "text-bg-info",
+        DespliegueEstado.Exitoso => "label label-success",
+        DespliegueEstado.Fallido => "label label-danger",
+        DespliegueEstado.EnProceso => "label label-warning",
+        DespliegueEstado.Reintentando => "label label-info",
         DespliegueEstado.Cancelado => "text-bg-secondary",
         _ => "text-bg-light text-dark"
     };

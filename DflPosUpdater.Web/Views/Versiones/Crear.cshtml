@@ -2,69 +2,79 @@
 @{
     ViewData["Title"] = "Subir version";
 }
-
-<h1 class="h3 mb-3">Crear nueva version</h1>
-
-<form asp-action="Crear" method="post" enctype="multipart/form-data" class="card">
-    <div class="card-body">
-        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-        <div class="mb-3">
-            <label asp-for="NumeroVersion" class="form-label"></label>
-            <input asp-for="NumeroVersion" class="form-control" placeholder="Ej. 1.0.26" />
-            <span asp-validation-for="NumeroVersion" class="text-danger"></span>
+<div class="normalheader transition animated fadeIn">
+    <div class="hpanel">
+        <div class="panel-body">
+            <h2 class="font-light m-b-xs">
+                Versiones
+            </h2>
+            <small>Crear nueva versión </small>
         </div>
+    </div>
+</div>
+<div class="content animate-panel">
+    <form asp-action="Crear" method="post" enctype="multipart/form-data" class="card">
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-        <div class="mb-3">
-            <label asp-for="Descripcion" class="form-label"></label>
-            <textarea asp-for="Descripcion" class="form-control" rows="3" placeholder="Correcciones o cambios principales"></textarea>
-            <span asp-validation-for="Descripcion" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Archivos" class="form-label"></label>
-            <input asp-for="Archivos" class="form-control" type="file" multiple />
-            <span asp-validation-for="Archivos" class="text-danger"></span>
-            <div class="form-text">Selecciona los archivos que debe contener la carpeta de version. Puedes agregar mas despues desde Configuracion archivos.</div>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="SubcarpetaBase" class="form-label"></label>
-            <input asp-for="SubcarpetaBase" class="form-control" placeholder="Ej. lib, config, imagenes. Vacio = raiz de la version" />
-            <span asp-validation-for="SubcarpetaBase" class="text-danger"></span>
-        </div>
-
-        <div class="form-check mb-3">
-            <input asp-for="PublicarAlCrear" class="form-check-input" />
-            <label asp-for="PublicarAlCrear" class="form-check-label">Crear despliegues al guardar</label>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Sucursales</label>
-            <div class="border rounded p-3" style="max-height: 240px; overflow:auto;">
-                @foreach (var sucursal in Model.SucursalesDisponibles)
-                {
-                    <div class="form-check">
-                        @if (sucursal.Selected)
-                        {
-                            <input class="form-check-input" type="checkbox" name="SucursalesSeleccionadas" value="@sucursal.Value" checked />
-                        }
-                        else
-                        {
-                            <input class="form-check-input" type="checkbox" name="SucursalesSeleccionadas" value="@sucursal.Value" />
-                        }
-                        <label class="form-check-label">@sucursal.Text</label>
-                    </div>
-                }               
+            <div class="mb-3">
+                <label asp-for="NumeroVersion" class="form-label"></label>
+                <input asp-for="NumeroVersion" class="form-control" placeholder="Ej. 1.0.26" />
+                <span asp-validation-for="NumeroVersion" class="text-danger"></span>
             </div>
-            <div class="form-text">Si no seleccionas ninguna, se publicara a todas las sucursales activas.</div>
+
+            <div class="mb-3">
+                <label asp-for="Descripcion" class="form-label"></label>
+                <textarea asp-for="Descripcion" class="form-control" rows="3" placeholder="Correcciones o cambios principales"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Archivos" class="form-label"></label>
+                <input asp-for="Archivos" class="form-control" type="file" multiple />
+                <span asp-validation-for="Archivos" class="text-danger"></span>
+                <div class="form-text">Selecciona los archivos que debe contener la carpeta de version. Puedes agregar mas despues desde Configuracion archivos.</div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SubcarpetaBase" class="form-label"></label>
+                <input asp-for="SubcarpetaBase" class="form-control" placeholder="Ej. lib, config, imagenes. Vacio = raiz de la version" />
+                <span asp-validation-for="SubcarpetaBase" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="PublicarAlCrear" class="form-check-input" />
+                <label asp-for="PublicarAlCrear" class="form-check-label">Crear despliegues al guardar</label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Sucursales</label>
+                <div class="border rounded p-3" style="max-height: 240px; overflow:auto;">
+                    @foreach (var sucursal in Model.SucursalesDisponibles)
+                    {
+                        <div class="form-check">
+                            @if (sucursal.Selected)
+                            {
+                                <input class="form-check-input" type="checkbox" name="SucursalesSeleccionadas" value="@sucursal.Value" checked />
+                            }
+                            else
+                            {
+                                <input class="form-check-input" type="checkbox" name="SucursalesSeleccionadas" value="@sucursal.Value" />
+                            }
+                            <label class="form-check-label">@sucursal.Text</label>
+                        </div>
+                    }
+                </div>
+                <div class="form-text">Si no seleccionas ninguna, se publicara a todas las sucursales activas.</div>
+            </div>
         </div>
-    </div>
-    <div class="card-footer d-flex justify-content-end gap-2">
-        <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
-        <button type="submit" class="btn btn-primary">Guardar version</button>
-    </div>
-</form>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar version</button>
+        </div>
+    </form>
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -28,7 +28,7 @@ public class VersionService : IVersionService
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<VersionApp> CrearVersionAsync(CrearVersionRequest request, CancellationToken cancellationToken = default)
+    public async Task<VersionApp> CrearVersionAsync2(CrearVersionRequest request, CancellationToken cancellationToken = default)
     {
         var archivos = request.Archivos?.Where(x => x.Length > 0).ToList() ?? new List<IFormFile>();
         if (archivos.Count == 0)
@@ -71,7 +71,71 @@ public class VersionService : IVersionService
         await transaction.CommitAsync(cancellationToken);
         return version;
     }
+    public async Task<VersionApp> CrearVersionAsync(CrearVersionRequest request, CancellationToken cancellationToken = default)
+    {
+        var archivos = request.Archivos?.Where(x => x.Length > 0).ToList() ?? new List<IFormFile>();
 
+        if (archivos.Count == 0)
+        {
+            throw new InvalidOperationException("Debes seleccionar al menos un archivo para la version.");
+        }
+
+        var numeroVersion = request.NumeroVersion.Trim();
+
+        if (await _db.Versiones.AnyAsync(x => x.NumeroVersion == numeroVersion, cancellationToken))
+        {
+            throw new InvalidOperationException($"La version {numeroVersion} ya existe.");
+        }
+
+        var strategy = _db.Database.CreateExecutionStrategy();
+
+        return await strategy.ExecuteAsync(async () =>
+        {
+            await using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                var safeVersion = FileHelper.ToSafeFolderName(numeroVersion);
+                var carpetaWeb = FileHelper.ToWebPath("uploads", "releases", safeVersion);
+                var carpetaFisica = FileHelper.ToPhysicalPath(_environment.WebRootPath, carpetaWeb);
+
+                FileHelper.EnsureDirectory(carpetaFisica);
+
+                var version = new VersionApp
+                {
+                    NumeroVersion = numeroVersion,
+                    Descripcion = request.Descripcion?.Trim(),
+                    RutaCarpeta = carpetaWeb,
+                    RutaZip = carpetaWeb,
+                    NombreArchivoOriginal = safeVersion,
+                    TamanoBytes = 0,
+                    TotalArchivos = 0,
+                    Sha256 = string.Empty,
+                    Estado = VersionEstado.Borrador,
+                    FechaCreacion = DateTime.Now
+                };
+
+                _db.Versiones.Add(version);
+                await _db.SaveChangesAsync(cancellationToken);
+
+                await AgregarArchivosInternoAsync(
+                    version,
+                    archivos,
+                    request.SubcarpetaBase,
+                    sobrescribirExistentes: true,
+                    cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+
+                return version;
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        });
+    }
     public Task<VersionApp?> ObtenerVersionAsync(int id, CancellationToken cancellationToken = default)
     {
         return _db.Versiones

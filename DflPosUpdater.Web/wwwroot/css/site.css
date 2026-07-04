@@ -1,57 +1,134 @@
-body {
-    background: #f6f7fb;
+/* NAVBAR FLORIDO */
+.navbar-florido {
+    background-color: rgb(5, 36, 161) !important;
+    border-color: rgb(5, 36, 161) !important;
+    min-height: 52px !important;
+    height: 52px !important;
+    margin-bottom: 0 !important;
 }
 
-.metric-card {
-    border-left: 4px solid #0d6efd;
+    .navbar-florido .container,
+    .navbar-florido .container-fluid {
+        min-height: 52px !important;
+    }
+
+    .navbar-florido .navbar-header {
+        height: 52px !important;
+    }
+
+.navbar-brand-florido {
+    height: 52px !important;
+    padding: 0 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px;
+    color: rgb(255, 255, 255) !important;
+    font-size: 18px !important;
+    font-weight: 600;
+    line-height: 52px !important;
 }
 
-.card {
-    border: 0;
-    box-shadow: 0 0.125rem 0.45rem rgba(0, 0, 0, 0.06);
+.navbar-brand-logo {
+    width: 26px !important;
+    height: 26px !important;
+    max-width: 26px !important;
+    max-height: 26px !important;
+    object-fit: contain;
+    display: inline-block;
 }
 
-.table code {
-    white-space: nowrap;
+.navbar-menu-florido > li > a {
+    color: rgb(255, 255, 255) !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    height: 52px !important;
 }
 
-.dt-container .dt-search,
-.dt-container .dt-length {
-    margin: 0.75rem;
+    .navbar-menu-florido > li > a:hover,
+    .navbar-menu-florido > li > a:focus {
+        color: rgb(255, 255, 255) !important;
+        background-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+.navbar-florido .navbar-toggle {
+    margin-top: 9px !important;
+    margin-bottom: 9px !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
 }
 
-.dt-container .dt-info,
-.dt-container .dt-paging {
-    margin: 0.75rem;
+    .navbar-florido .navbar-toggle .icon-bar {
+        background-color: rgb(255, 255, 255) !important;
+    }
+
+.navbar-florido .navbar-collapse {
+    border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-.dt-container .dt-search input,
-.dt-container .dt-length select {
-    margin-left: 0.5rem;
+/* Ajuste para que el contenido no quede debajo del navbar fijo */
+body.fixed-navbar {
+    padding-top: 52px !important;
+}
+    /* ==============================
+   CORRECCION ESPACIO BLANCO BODY
+   ============================== */
+
+    /* Quita el espacio reservado por HOMER */
+    body.fixed-navbar,
+    body.fixed-navbar.hide-sidebar,
+    body.Index.fixed-navbar {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+        background: #f1f3f6 !important;
+    }
+
+/* Navbar fijo compacto */
+.navbar-florido,
+.navbar-fixed-top {
+    height: 52px !important;
+    min-height: 52px !important;
+    margin-bottom: 0 !important;
 }
 
-.form-check .icheckbox_square-blue,
-.form-check .iradio_square-blue {
-    margin-left: -1.5em;
-    margin-right: 0.5rem;
-    vertical-align: middle;
+/* El wrapper debe iniciar justo debajo del navbar */
+#wrapper {
+    margin-top: 52px !important;
+    padding-top: 0 !important;
+    background: #f1f3f6 !important;
+    min-height: calc(100vh - 52px) !important;
 }
 
-.form-check-label {
-    vertical-align: middle;
+/* El wrap no debe ocupar altura extra */
+#wrap {
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.field-validation-error,
-.validation-summary-errors {
-    font-size: 0.9rem;
+/* Corrige espacio interno del contenido HOMER */
+.normalheader {
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+    background: #f1f3f6 !important;
 }
 
-input.input-validation-error,
-textarea.input-validation-error,
-select.input-validation-error {
-    border-color: #dc3545;
+.content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    background: #f1f3f6 !important;
 }
 
-pre {
-    white-space: pre-wrap;
+/* Por si HOMER agrega espacio al panel principal */
+.normalheader .hpanel {
+    margin-top: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+.normalheader .panel-body {
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
 }

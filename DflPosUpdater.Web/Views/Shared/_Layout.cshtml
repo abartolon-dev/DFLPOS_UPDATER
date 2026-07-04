@@ -2,71 +2,129 @@
     var successMessage = TempData["Success"]?.ToString();
     var errorMessage = TempData["Error"]?.ToString();
 }
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DFL POS Updater</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/v/bs5/dt-2.3.8/datatables.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.3/skins/square/blue.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - DFLPOS Actualizador</title>    
+    <link rel="icon"
+          type="image/x-icon"
+          href="~/Content/Images/Empresa/logoflorido.ico"
+          asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/Vendor/fontawesome/css/font-awesome.min.css"
+          asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" />
+    <link rel="stylesheet" href="~/dist/css/vendor.bundle.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/dist/css/app.bundle.css" asp-append-version="true" />
 </head>
-<body>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-controller="Dashboard" asp-action="Index">DFL POS Updater</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Mostrar menu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="Versiones" asp-action="Index">Versiones</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="ConfiguracionArchivos" asp-action="Index">Configuracion archivos</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="Sucursales" asp-action="Index">Sucursales</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="Despliegues" asp-action="Index">Despliegues</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/hangfire" target="_blank" rel="noopener">Hangfire</a></li>
-                </ul>
+
+<body class="Index tooltip-demo sidebar-scroll hide-sidebar">
+    <div class="color-line">
+    </div>
+    <div id="wrap">
+        <div class="navbar navbar-default navbar-fixed-top navbar-florido">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button"
+                            class="navbar-toggle collapsed"
+                            data-toggle="collapse"
+                            data-target="#mainNavbar"
+                            aria-expanded="false">
+                        <span class="sr-only">Mostrar navegación</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <a class="navbar-brand navbar-brand-florido"
+                       asp-controller="Dashboard"
+                       asp-action="Index">
+                        <img src="~/Content/Images/Empresa/logoflorido.ico"
+                             asp-append-version="true"
+                             alt="El Florido"
+                             class="navbar-brand-logo" />
+                        <span>DFLPOS Actualizador</span>
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="nav navbar-nav navbar-menu-florido">
+
+                        <li>
+                            <a asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                        </li>
+
+                        <li>
+                            <a asp-controller="Versiones" asp-action="Index">Versiones</a>
+                        </li>
+
+                        <li>
+                            <a asp-controller="ConfiguracionArchivos" asp-action="Index">Configuración de archivos</a>
+                        </li>
+
+                        <li>
+                            <a asp-controller="Sucursales" asp-action="Index">Sucursales</a>
+                        </li>
+
+                        <li>
+                            <a asp-controller="Despliegues" asp-action="Index">Despliegues</a>
+                        </li>
+
+                        <li>
+                            <a href="/hangfire" target="_blank">Hangfire</a>
+                        </li>
+
+                    </ul>
+                </div>
+
             </div>
         </div>
-    </nav>
-</header>
+    </div>
 
-<main class="container-fluid py-4">
-    <noscript>
-        @if (!string.IsNullOrWhiteSpace(successMessage))
-        {
-            <div class="alert alert-success">@successMessage</div>
-        }
-        @if (!string.IsNullOrWhiteSpace(errorMessage))
-        {
-            <div class="alert alert-danger">@errorMessage</div>
-        }
-    </noscript>
+    <div id="wrapper">
+        <noscript>
+            @if (!string.IsNullOrWhiteSpace(successMessage))
+            {
+                <div class="alert alert-success">@successMessage</div>
+            }
 
-    @RenderBody()
-</main>
+            @if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+        </noscript>
 
-<script>
-    window.DflPosUpdaterMessages = {
-        success: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(successMessage)),
-        error: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(errorMessage))
-    };
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/v/bs5/dt-2.3.8/datatables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.3/icheck.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/localization/messages_es.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+        @RenderBody()
+        <footer class="footer">
+            <div class="pull-left">
+                2026 - @DateTime.Now.Year &copy; Distribuidora el Florido S.A. de C.V.
+            </div>
+            <span class="pull-right">
+                <div class="form-group" title="@ViewBag.MyPathInServer" data-placement="top" data-toggle="tooltip">
+                    DFLPOS Actualizador
+                </div>
+            </span>
+        </footer>
+    </div>
+
+    <script>
+            window.DflPosUpdaterMessages = {
+                success: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(successMessage)),
+                error: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(errorMessage))
+            };
+    </script>
+
+    <script src="~/dist/js/vendor.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/dist/js/app.bundle.min.js" asp-append-version="true"></script>
+
+    <!-- 10. Scripts propios de cada vista -->
+    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>

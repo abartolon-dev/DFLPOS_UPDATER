@@ -3,45 +3,74 @@
     ViewData["Title"] = "Versiones";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3">Versiones</h1>
-    <a class="btn btn-primary" asp-action="Crear">Crear nueva version</a>
-</div>
-
-<div class="card">
-    <div class="table-responsive">
-        <table class="table table-hover mb-0 js-datatable">
-            <thead>
-            <tr>
-                <th>Version</th>
-                <th>Estado</th>
-                <th>Fecha creacion</th>
-                <th>Fecha publicacion</th>
-                <th>Archivos</th>
-                <th>Tamano</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="fw-bold">@item.NumeroVersion</td>
-                    <td>@item.Estado</td>
-                    <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@item.FechaPublicacion?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@item.TotalArchivos</td>
-                    <td>@FormatBytes(item.TamanoBytes)</td>
-                    <td class="text-end">
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Detalle" asp-route-id="@item.Id">Ver</a>
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="ConfiguracionArchivos" asp-action="Editar" asp-route-id="@item.Id">Archivos</a>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+<div class="normalheader transition animated fadeIn">
+    <div class="hpanel">
+        <div class="panel-body">                    
+            <h2 class="font-light m-b-xs">
+                Versiones
+            </h2>
+            <small>Subir nueva version </small>
+        </div>
     </div>
 </div>
+
+<div class="content animate-panel">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="hpanel">
+                <div class="panel-heading hbuilt">
+                    <div class="pull-right">
+                        <a class="btn btn-primary btn-xs"
+                           asp-controller="Versiones"
+                           asp-action="Crear">
+                            Crear nueva versión
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 js-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Version</th>
+                                    <th>Estado</th>
+                                    <th>Fecha creacion</th>
+                                    <th>Fecha publicacion</th>
+                                    <th>Archivos</th>
+                                    <th>Tamano</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="fw-bold">@item.NumeroVersion</td>
+                                        <td>@item.Estado</td>
+                                        <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>@item.FechaPublicacion?.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>@item.TotalArchivos</td>
+                                        <td>@FormatBytes(item.TamanoBytes)</td>
+                                        <td class="text-end">
+                                            <a class="btn btn-sm btn-outline-secondary" asp-action="Detalle" asp-route-id="@item.Id">Ver</a>
+                                            <a class="btn btn-sm btn-outline-primary" asp-controller="ConfiguracionArchivos" asp-action="Editar" asp-route-id="@item.Id">Archivos</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    Versiones creadas
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
 
 @functions {
     string FormatBytes(long bytes)

@@ -1,0 +1,7 @@
+﻿
+.RowCheck ul li { /*remover el estilo del listado*/
+	list-style: none;
+	font-size: 10px;
+	font-weight: normal;
+	margin-left: -30px;
+}

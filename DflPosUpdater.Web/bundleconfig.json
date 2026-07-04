@@ -1,0 +1,95 @@
+[
+  {
+    "outputFileName": "wwwroot/dist/css/vendor.bundle.min.css",
+    "inputFiles": [
+      "wwwroot/Vendor/bootstrap/dist/css/bootstrap.min.css",      
+      "wwwroot/Vendor/animate.css/animate.min.css",
+      "wwwroot/Vendor/toastr/build/toastr.min.css",
+      "wwwroot/Vendor/sweetalert/lib/sweet-alert.css",
+      "wwwroot/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css",
+      "wwwroot/fonts/pe-icon-7-stroke/css/helper.css",
+      "wwwroot/Vendor/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css",
+      "wwwroot/Vendor/datatables.net-bs/css/dataTables.bootstrap.min.css",
+      "wwwroot/Vendor/xeditable/bootstrap3-editable/css/bootstrap-editable.css",
+      "wwwroot/Vendor/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css",
+      "wwwroot/Vendor/select2-3.5.2/select2.css",
+      "wwwroot/Vendor/select2-bootstrap/select2-bootstrap.css",
+      "wwwroot/Vendor/iCheck/skins/square/blue.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/css/app.bundle.css",
+    "inputFiles": [
+      "wwwroot/Content/style.css",
+      "wwwroot/css/style.css",
+      "wwwroot/css/simple_check.css",
+      "wwwroot/css/static_custom.css",
+      "wwwroot/css/pagination.css",
+      "wwwroot/css/Cards.css",
+      "wwwroot/css/site.css"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/vendor.bundle.min.js",
+    "inputFiles": [
+      "wwwroot/Vendor/jquery/dist/jquery.min.js",
+      "wwwroot/Vendor/jquery-ui/jquery-ui.min.js",
+      "wwwroot/Vendor/bootstrap/dist/js/bootstrap.min.js",
+      "wwwroot/Vendor/metisMenu/dist/metisMenu.min.js",
+      "wwwroot/Vendor/slimScroll/jquery.slimscroll.js",
+      "wwwroot/Vendor/iCheck/icheck.min.js",
+      "wwwroot/Vendor/toastr/build/toastr.min.js",
+      "wwwroot/Vendor/sweetalert/lib/sweet-alert.js",
+      "wwwroot/Vendor/datatables.net/js/jquery.dataTables.js",
+      "wwwroot/Vendor/datatables.net-bs/js/dataTables.bootstrap.min.js",
+      "wwwroot/js/dataTables.rowsGroup.js",
+      "wwwroot/Vendor/datatables.net-buttons/js/dataTables.buttons.min.js",
+      "wwwroot/Vendor/datatables.net-buttons-bs/js/buttons.bootstrap.min.js",
+      "wwwroot/Vendor/datatables.net-buttons/js/buttons.html5.min.js",
+      "wwwroot/Vendor/datatables.net-buttons/js/buttons.print.min.js",
+      "wwwroot/Vendor/pdfmake/build/pdfmake.min.js",
+      "wwwroot/Vendor/pdfmake/build/vfs_fonts.js",
+      "wwwroot/Vendor/datatables_plugins/api/sum().js",
+      "wwwroot/js/jquery.validate.js",
+      "wwwroot/Vendor/peity/jquery.peity.min.js",
+      "wwwroot/Vendor/sparkline/index.js",
+      "wwwroot/Vendor/xeditable/bootstrap3-editable/js/bootstrap-editable.js",
+      "wwwroot/Vendor/moment/moment.js",
+      "wwwroot/Vendor/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js",
+      "wwwroot/Vendor/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.es.min.js",
+      "wwwroot/Vendor/fullcalendar/dist/fullcalendar.min.js",
+      "wwwroot/Vendor/fullcalendar/dist/locale/es-us.js",
+      "wwwroot/Vendor/select2-3.5.2/select2.min.js",
+      "wwwroot/Vendor/select2-3.5.2/select2_locale_es.js",
+      "wwwroot/Vendor/clockpicker/dist/bootstrap-clockpicker.min.js",
+      "wwwroot/Vendor/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js",
+      "wwwroot/Vendor/ladda/dist/spin.min.js",
+      "wwwroot/Vendor/ladda/dist/ladda.min.js",
+      "wwwroot/Vendor/ladda/dist/ladda.jquery.min.js",
+      "wwwroot/js/axios.min.js",
+      "wwwroot/js/knockout-min.js",
+      "wwwroot/js/pagination.js"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/app.bundle.min.js",
+    "inputFiles": [
+      "wwwroot/js/Datatable.js",
+      "wwwroot/js/homer.js",
+      "wwwroot/js/charts.js",
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  }
+]

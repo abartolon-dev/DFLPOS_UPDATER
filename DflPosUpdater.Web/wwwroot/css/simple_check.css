@@ -1,0 +1,76 @@
+﻿/*
+<label class="sck_container">
+    Mostrar en cenefa
+    <input id="ckbox_show_in_label" type="checkbox">
+    <span class="checkmark"></span>
+</label>
+ */
+/* The container */
+    .sck_container {
+     display: inline;
+     position: relative;
+     padding: 0.6rem 3rem;
+     margin-bottom: 12px;
+     cursor: pointer;
+     -webkit-user-select: none;
+     -moz-user-select: none;
+     -ms-user-select: none;
+     user-select: none;
+ }
+
+/* Hide the browser's default checkbox */
+.sck_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.sck_container .checkmark {
+    position: absolute;
+    top: 0.3rem;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border: 0.2rem solid #bbb;
+}
+
+/* On mouse-over, add a grey background color */
+.sck_container .checkmark:hover {
+        
+        border: 0.2rem solid #59a753;
+    }
+
+/* When the checkbox is checked, add a blue background */
+.sck_container input:checked ~ .checkmark {
+    background-color: #59a753;
+    border: 0.2rem solid #59a753;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.sck_container .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.sck_container input ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.sck_container .checkmark:after {
+    left: 0.8rem;
+    top: 0.3rem;
+    width: 0.63rem;
+    height: 1.2rem;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+

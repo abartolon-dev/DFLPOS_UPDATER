@@ -1,3 +1,4 @@
+/*
 (function (window, document, $) {
     'use strict';
 
@@ -181,3 +182,4 @@
 
     window.DflPosUpdaterUi = app;
 })(window, document, window.jQuery);
+*/
