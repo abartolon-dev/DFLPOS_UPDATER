@@ -5,7 +5,7 @@
 
 <div class="normalheader transition animated fadeIn">
     <div class="hpanel">
-        <div class="panel-body">                    
+        <div class="panel-body">                
             <h2 class="font-light m-b-xs">
                 Versiones
             </h2>
@@ -16,17 +16,18 @@
 
 <div class="content animate-panel">
     <div class="row">
-        <div class="col-lg-12">
-            <div class="hpanel">
+        <div class="col-lg-12"> 
+            <div class="hpanel hblue">
                 <div class="panel-heading hbuilt">
                     <div class="pull-right">
-                        <a class="btn btn-primary btn-xs"
+                        <a class="btn btn-info btn-xs"
                            asp-controller="Versiones"
                            asp-action="Crear">
                             Crear nueva versión
                         </a>
                     </div>
-                    <div class="clearfix"></div>
+                    @* <div class="clearfix"></div> *@
+                    Lista de versiones
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -47,24 +48,21 @@
                                 {
                                     <tr>
                                         <td class="fw-bold">@item.NumeroVersion</td>
-                                        <td>@item.Estado</td>
+                                        <td><span class="@CssEstado(item.Estado)">@item.Estado</span></td>
                                         <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
                                         <td>@item.FechaPublicacion?.ToString("yyyy-MM-dd HH:mm")</td>
                                         <td>@item.TotalArchivos</td>
                                         <td>@FormatBytes(item.TamanoBytes)</td>
                                         <td class="text-end">
-                                            <a class="btn btn-sm btn-outline-secondary" asp-action="Detalle" asp-route-id="@item.Id">Ver</a>
-                                            <a class="btn btn-sm btn-outline-primary" asp-controller="ConfiguracionArchivos" asp-action="Editar" asp-route-id="@item.Id">Archivos</a>
+                                            <a class="btn btn-sm btn-outline-secondary" asp-action="Detalle" asp-route-id="@item.Id"><i class="fa fa-list" aria-hidden="true"></i> Detalle</a>
+                                            <a class="btn btn-sm btn-outline-primary" asp-controller="ConfiguracionArchivos" asp-action="Editar" asp-route-id="@item.Id"><i class="fa fa-files-o" aria-hidden="true"></i> Archivos</a>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="panel-footer">
-                    Versiones creadas
-                </div>
+                </div>                
             </div>
         </div>
     
@@ -79,4 +77,11 @@
         if (bytes >= 1024) return $"{bytes / 1024d:N2} KB";
         return $"{bytes} B";
     }
+    string CssEstado(VersionEstado estado) => estado switch
+    {
+        VersionEstado.Borrador => "label label-warning",
+        VersionEstado.Publicada => "label label-success",
+        VersionEstado.Cancelada => "label label-danger",
+        _ => "label label-primary"
+    };
 }

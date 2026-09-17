@@ -2,49 +2,73 @@
 @{
     ViewData["Title"] = "Despliegues";
 }
-
-<h1 class="h3 mb-3">Despliegues</h1>
-
-<div class="card">
-    <div class="table-responsive">
-        <table class="table table-hover mb-0 js-datatable">
-            <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Versión</th>
-                <th>Sucursal</th>
-                <th>Estado</th>
-                <th>Intentos</th>
-                <th>Job</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@item.VersionApp?.NumeroVersion</td>
-                    <td>@item.Sucursal?.Nombre</td>
-                    <td><span class="badge @CssEstado(item.Estado)">@item.Estado</span></td>
-                    <td>@item.Intentos</td>
-                    <td>@item.HangfireJobId</td>
-                    <td><a asp-action="Detalle" asp-route-id="@item.Id">Ver</a></td>
-                </tr>
-            }
-            </tbody>
-        </table>
+<div class="normalheader transition animated fadeIn">
+    <div class="hpanel">
+        <div class="panel-body">
+            <h2 class="font-light m-b-xs">
+               Despliegues
+            </h2>
+            <small>Historial de despliegues </small>
+        </div>
     </div>
 </div>
+<div class="content animate-panel">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="hpanel hblue">
+                <div class="panel-heading hbuilt">
+                    
+                    @* <div class="clearfix"></div> *@
+                    Lista de despliegues
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0 js-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Versión</th>
+                                        <th>Sucursal</th>
+                                        <th>Estado</th>
+                                        <th>Intentos</th>
+                                        <th>Job</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>@item.VersionApp?.NumeroVersion</td>
+                                            <td>@item.Sucursal?.Nombre</td>
+                                            <td><span class="badge @CssEstado(item.Estado)">@item.Estado</span></td>
+                                            <td>@item.Intentos</td>
+                                            <td>@item.HangfireJobId</td>
+                                            <td><a asp-action="Detalle" asp-route-id="@item.Id"><i class="fa fa-list" aria-hidden="true"></i> Detalle</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 @functions {
     string CssEstado(DespliegueEstado estado) => estado switch
     {
-        DespliegueEstado.Exitoso => "text-bg-success",
-        DespliegueEstado.Fallido => "text-bg-danger",
-        DespliegueEstado.EnProceso => "text-bg-warning",
-        DespliegueEstado.Reintentando => "text-bg-info",
-        DespliegueEstado.Cancelado => "text-bg-secondary",
-        _ => "text-bg-light text-dark"
+        DespliegueEstado.Exitoso => "label label-success",
+        DespliegueEstado.Fallido => "label label-danger",
+        DespliegueEstado.EnProceso => "label label-warning",
+        DespliegueEstado.Reintentando => "label label-info",
+        DespliegueEstado.Cancelado => "label label-danger2",
+        _ => "label label-danger"
     };
 }

@@ -1,0 +1,13 @@
+dflpos.exe
+msct.txt
+Newtonsoft.Json.dll
+NetpayPWConnector.dll
+SmartFinancial.dll
+PN4201.dll
+PN4301.dll
+smartPayment.dll
+spay_logger.dll
+TransferDirecto.dll
+RestSharp.dll
+sps.exe
+appconfig.txt

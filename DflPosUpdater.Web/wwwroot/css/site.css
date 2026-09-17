@@ -132,3 +132,29 @@ body.fixed-navbar {
     padding-top: 18px !important;
     padding-bottom: 18px !important;
 }
+
+/*.form-check .icheckbox_square-blue,
+.form-check .iradio_square-blue {
+    margin-left: -1.5em;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+*/
+.form-check-label {
+    vertical-align: middle;
+}
+
+.field-validation-error,
+.validation-summary-errors {
+    font-size: 0.9rem;
+}
+
+input.input-validation-error,
+textarea.input-validation-error,
+select.input-validation-error {
+    border-color: #dc3545;
+}
+
+pre {
+    white-space: pre-wrap;
+}

@@ -73,11 +73,31 @@ public class VersionService : IVersionService
     }
     public async Task<VersionApp> CrearVersionAsync(CrearVersionRequest request, CancellationToken cancellationToken = default)
     {
-        var archivos = request.Archivos?.Where(x => x.Length > 0).ToList() ?? new List<IFormFile>();
+        var archivosLista = request.Archivos?.ToList() ?? new List<IFormFile>();
+
+        if (archivosLista.Count == 0)
+        {
+            throw new InvalidOperationException("Debes seleccionar al menos un archivo para la version.");
+        }
+
+        var archivosInvalidos = archivosLista
+            .Where(x => !EsArchivoPermitidoConTamanoCero(x) && x.Length <= 0)
+            .Select(x => x.FileName)
+            .ToList();
+
+        if (archivosInvalidos.Any())
+        {
+            throw new InvalidOperationException(
+                $"Los siguientes archivos tienen tamaño 0 y no estan permitidos: {string.Join(", ", archivosInvalidos)}");
+        }
+
+        var archivos = archivosLista
+            .Where(x => x.Length > 0 || EsArchivoPermitidoConTamanoCero(x))
+            .ToList();
 
         if (archivos.Count == 0)
         {
-            throw new InvalidOperationException("Debes seleccionar al menos un archivo para la version.");
+            throw new InvalidOperationException("Debes seleccionar al menos un archivo valido para la version.");
         }
 
         var numeroVersion = request.NumeroVersion.Trim();
@@ -158,7 +178,7 @@ public class VersionService : IVersionService
         return FileHelper.ToPhysicalPath(_environment.WebRootPath, ruta);
     }
 
-    public async Task<List<VersionArchivo>> AgregarArchivosAsync(
+    public async Task<List<VersionArchivo>> AgregarArchivosAsync2(
         int versionId,
         IEnumerable<IFormFile> archivos,
         string? subcarpetaBase,
@@ -169,8 +189,16 @@ public class VersionService : IVersionService
             .Include(x => x.Archivos)
             .FirstOrDefaultAsync(x => x.Id == versionId, cancellationToken)
             ?? throw new InvalidOperationException("No se encontro la version.");
-
+        var archivoTxtValid = archivos.Where(w => w.FileName.Equals("appconfig.txt"));
         var archivosValidos = archivos.Where(x => x.Length > 0).ToList();
+        if(archivoTxtValid is not null)
+        {
+            archivosValidos = archivos.Where(x => x.Length >= 0).ToList();
+        }
+        else
+        {
+
+        }
         if (archivosValidos.Count == 0)
         {
             throw new InvalidOperationException("Debes seleccionar al menos un archivo.");
@@ -178,7 +206,61 @@ public class VersionService : IVersionService
 
         return await AgregarArchivosInternoAsync(version, archivosValidos, subcarpetaBase, sobrescribirExistentes, cancellationToken);
     }
+    public async Task<List<VersionArchivo>> AgregarArchivosAsync(
+    int versionId,
+    IEnumerable<IFormFile> archivos,
+    string? subcarpetaBase,
+    bool sobrescribirExistentes,
+    CancellationToken cancellationToken = default)
+    {
+        var version = await _db.Versiones
+            .Include(x => x.Archivos)
+            .FirstOrDefaultAsync(x => x.Id == versionId, cancellationToken)
+            ?? throw new InvalidOperationException("No se encontro la version.");
 
+        var archivosLista = archivos?.ToList() ?? new List<IFormFile>();
+
+        if (archivosLista.Count == 0)
+        {
+            throw new InvalidOperationException("Debes seleccionar al menos un archivo.");
+        }
+
+        var archivosInvalidos = archivosLista
+            .Where(x => !EsArchivoPermitidoConTamanoCero(x) && x.Length <= 0)
+            .Select(x => x.FileName)
+            .ToList();
+
+        if (archivosInvalidos.Any())
+        {
+            throw new InvalidOperationException(
+                $"Los siguientes archivos tienen tamaño 0 y no estan permitidos: {string.Join(", ", archivosInvalidos)}");
+        }
+
+        var archivosValidos = archivosLista
+            .Where(x => x.Length > 0 || EsArchivoPermitidoConTamanoCero(x))
+            .ToList();
+
+        if (archivosValidos.Count == 0)
+        {
+            throw new InvalidOperationException("Debes seleccionar al menos un archivo valido.");
+        }
+
+        return await AgregarArchivosInternoAsync(
+            version,
+            archivosValidos,
+            subcarpetaBase,
+            sobrescribirExistentes,
+            cancellationToken);
+    }
+    private static bool EsArchivoPermitidoConTamanoCero(IFormFile archivo)
+    {
+        var fileName = Path.GetFileName(archivo.FileName);
+
+        return string.Equals(
+            fileName,
+            "appconfig.txt",
+            StringComparison.OrdinalIgnoreCase);
+    }
     public async Task<int> EliminarArchivoAsync(int archivoId, CancellationToken cancellationToken = default)
     {
         var archivo = await _db.VersionArchivos

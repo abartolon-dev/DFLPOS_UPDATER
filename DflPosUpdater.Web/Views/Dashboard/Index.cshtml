@@ -20,10 +20,11 @@
         <div class="col-lg-3">
             <div class="hpanel hgreen">
                 <div class="panel-body">
-                    @* <span class="label label-success pull-right">Subir nueva version</span> *@
-                    <div class="pull-right">                     
-                        <a class="btn btn-default btn-xs" asp-controller="Versiones" asp-action="Crear"> <i class="fa fa-plus"></i> Nueva version</a>                     
+                    @* <span class="label label-success pull-right">Subir nueva version</span> 
+                    <div class="pull-right">
+                        <a class="btn btn-default btn-xs" asp-controller="Versiones" asp-action="Crear"> <i class="fa fa-plus"></i> Nueva version</a>
                     </div>
+                    *@
                     <div class="row">
                         <div class="col-sm-8">
                             <h4><a href="">Ultima Version publicada</a></h4>
@@ -105,33 +106,51 @@
 
 
     <div class="hpanel">
+        <div class="panel-heading hbuilt">
+            <div class="panel-tools">               
+            </div>
+           Despliegues recientes
+        </div>
         <div class="panel-body">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0 js-datatable">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Versión</th>
-                            <th>Sucursal</th>
-                            <th>Estado</th>
-                            <th>Intentos</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.DesplieguesRecientes)
-                        {
-                            <tr>
-                                <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td>@item.VersionApp?.NumeroVersion</td>
-                                <td>@item.Sucursal?.Nombre</td>
-                                <td><span class="@CssEstado(item.Estado)">@item.Estado</span></td>
-                                <td>@item.Intentos</td>
-                                <td><a asp-controller="Despliegues" asp-action="Detalle" asp-route-id="@item.Id">Ver</a></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            <div class="animate-panel" data-effect="zoomIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover js-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Versión</th>
+                                        <th>Sucursal</th>
+                                        <th>Estado</th>
+                                        <th>Intentos</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.DesplieguesRecientes)
+                                    {
+                                        <tr>
+                                            <td>@item.FechaCreacion.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>@item.VersionApp?.NumeroVersion</td>
+                                            <td>@item.Sucursal?.Nombre</td>
+                                            <td><span class="@CssEstado(item.Estado)">@item.Estado</span></td>
+                                            <td>@item.Intentos</td>
+                                            <td>
+                                                <a asp-controller="Despliegues"
+                                                   asp-action="Detalle"
+                                                   asp-route-id="@item.Id">
+                                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                                    Detalle
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -221,9 +240,9 @@
     {
         DespliegueEstado.Exitoso => "label label-success",
         DespliegueEstado.Fallido => "label label-danger",
-        DespliegueEstado.EnProceso => "label label-warning",
-        DespliegueEstado.Reintentando => "label label-info",
-        DespliegueEstado.Cancelado => "text-bg-secondary",
-        _ => "text-bg-light text-dark"
+        DespliegueEstado.EnProceso => "label label-info",
+        DespliegueEstado.Reintentando => "label label-warning",
+        DespliegueEstado.Cancelado => "label label-danger2",
+        _ => "label label-primary"
     };
 }

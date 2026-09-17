@@ -2,46 +2,67 @@
 @{
     ViewData["Title"] = "Configuracion de archivos";
 }
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h1 class="h3">Configuracion de archivos</h1>
-        <div class="text-muted">Administra los archivos que debe contener la carpeta de cada version.</div>
-    </div>
-    <a class="btn btn-primary" asp-controller="Versiones" asp-action="Crear">Crear version</a>
-</div>
-
-<div class="card">
-    <div class="table-responsive">
-        <table class="table table-hover mb-0 js-datatable">
-            <thead>
-            <tr>
-                <th>Version</th>
-                <th>Estado</th>
-                <th>Archivos</th>
-                <th>Tamano total</th>
-                <th>Carpeta local</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var version in Model)
-            {
-                <tr>
-                    <td class="fw-bold">@version.NumeroVersion</td>
-                    <td>@version.Estado</td>
-                    <td>@version.TotalArchivos</td>
-                    <td>@FormatBytes(version.TamanoBytes)</td>
-                    <td><code>@version.RutaCarpeta</code></td>
-                    <td class="text-end">
-                        <a class="btn btn-sm btn-outline-primary" asp-action="Editar" asp-route-id="@version.Id">Configurar</a>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+<div class="normalheader transition animated fadeIn">
+    <div class="hpanel">
+        <div class="panel-body">            
+            <h2 class="font-light m-b-xs">
+                Configuracion de archivos
+            </h2>
+            <small>Administra los archivos que debe contener la carpeta de cada version.</small>
+        </div>
     </div>
 </div>
+<div class="content animate-panel">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="hpanel hblue">
+                <div class="panel-heading hbuilt">
+                    <div class="pull-right">
+                        <a class="btn btn-info btn-xs"
+                           asp-controller="Versiones"
+                           asp-action="Crear">
+                            Crear versión
+                        </a>
+                    </div>
+                  Versiones                 
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 js-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Version</th>
+                                    <th>Estado</th>
+                                    <th>Archivos</th>
+                                    <th>Tamano total</th>
+                                    <th>Carpeta local</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var version in Model)
+                                {
+                                    <tr>
+                                        <td class="fw-bold">@version.NumeroVersion</td>
+                                        <td><span class="@CssEstado(version.Estado)">@version.Estado</span></td>
+                                        <td>@version.TotalArchivos</td>
+                                        <td>@FormatBytes(version.TamanoBytes)</td>
+                                        <td><code>@version.RutaCarpeta</code></td>
+                                        <td >
+                                            <a class="btn btn-xs btn-outline btn-primary" asp-action="Editar" asp-route-id="@version.Id"><i class="fa fa-cog" aria-hidden="true"></i> Configurar</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 @functions {
     string FormatBytes(long bytes)
@@ -50,4 +71,11 @@
         if (bytes >= 1024) return $"{bytes / 1024d:N2} KB";
         return $"{bytes} B";
     }
+    string CssEstado(VersionEstado estado) => estado switch
+    {
+        VersionEstado.Borrador => "label label-warning",
+        VersionEstado.Publicada => "label label-success",
+        VersionEstado.Cancelada => "label label-danger",
+        _ => "label label-primary"
+    };
 }

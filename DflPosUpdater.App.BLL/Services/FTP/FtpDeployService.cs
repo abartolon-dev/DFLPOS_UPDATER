@@ -79,8 +79,8 @@ public class FtpDeployService : IFtpDeployService
         await AddLogAsync(despliegue.Id, LogTipo.Info, $"Iniciando subida FTP por carpeta. Intento {despliegue.Intentos}.", null, cancellationToken);
 
         var remoteBase = NormalizeRemotePath(sucursal.RutaDestino);
-        var remoteVersionDir = $"{remoteBase}/releases/{SafeRemoteSegment(version.NumeroVersion)}";
-        var remoteManifestPath = $"{remoteBase}/manifest.json";
+        var remoteVersionDir = $"{remoteBase}/{SafeRemoteSegment(version.NumeroVersion)}";
+        var remoteManifestPath = $"{remoteVersionDir}/manifest.json";
         var remoteVersionManifestPath = $"{remoteVersionDir}/manifest.json";
 
         try

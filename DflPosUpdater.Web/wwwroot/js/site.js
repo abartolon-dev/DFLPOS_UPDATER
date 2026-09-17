@@ -1,4 +1,4 @@
-/*
+
 (function (window, document, $) {
     'use strict';
 
@@ -47,39 +47,46 @@
                     return;
                 }
 
-                const $table = $(this);
-                const pageLength = parseInt($table.data('page-length'), 10) || 10;
-                const ordering = $table.data('ordering') !== false;
-                const searching = $table.data('searching') !== false;
+                var $table = $(this);
+                var pageLength = parseInt($table.data('page-length'), 10) || 10;
+                var ordering = $table.data('ordering') !== false;
+                var searching = $table.data('searching') !== false;
 
                 $table.DataTable({
                     pageLength: pageLength,
                     ordering: ordering,
                     searching: searching,
                     autoWidth: false,
-                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todos']],
+                    responsive: false,
+
+                    lengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, 'Todos']
+                    ],
+                    buttons: [],
                     language: {
-                        processing: 'Procesando...',
-                        search: 'Buscar:',
-                        lengthMenu: 'Mostrar _MENU_ registros',
-                        info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
-                        infoEmpty: 'Mostrando 0 a 0 de 0 registros',
-                        infoFiltered: '(filtrado de _MAX_ registros totales)',
-                        infoPostFix: '',
-                        loadingRecords: 'Cargando...',
-                        zeroRecords: 'No se encontraron resultados',
-                        emptyTable: 'No hay datos disponibles',
-                        paginate: {
-                            first: 'Primero',
-                            previous: 'Anterior',
-                            next: 'Siguiente',
-                            last: 'Ultimo'
+                        sProcessing: "Procesando...",
+                        sLengthMenu: "Mostrar _MENU_ registros",
+                        sZeroRecords: "No se encontraron resultados",
+                        sEmptyTable: "Ningún dato disponible en esta tabla",
+                        sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                        sSearch: "Buscar:",
+                        sLoadingRecords: "Cargando...",
+                        oPaginate: {
+                            sFirst: "Primero",
+                            sLast: "Último",
+                            sNext: "Siguiente",
+                            sPrevious: "Anterior"
                         },
-                        aria: {
-                            sortAscending: ': activar para ordenar ascendente',
-                            sortDescending: ': activar para ordenar descendente'
+                        oAria: {
+                            sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                            sSortDescending: ": Activar para ordenar la columna de manera descendente"
                         }
-                    }
+                    },
+
+                    dom: "<'row'<'col-sm-4'l><'col-sm-4 text-left'B><'col-sm-4'f>t<'col-sm-6'i><'col-sm-6'p>>",
                 });
             });
         },
@@ -87,8 +94,7 @@
         initICheck: function () {
             if (!$.fn.iCheck) {
                 return;
-            }
-
+            }      
             const $inputs = $('input[type="checkbox"].form-check-input, input[type="radio"].form-check-input')
                 .not('.icheck-ignore')
                 .not('[data-icheck="false"]');
@@ -143,6 +149,7 @@
             }
         },
 
+
         initConfirmations: function () {
             if (!window.Swal) {
                 return;
@@ -182,4 +189,3 @@
 
     window.DflPosUpdaterUi = app;
 })(window, document, window.jQuery);
-*/

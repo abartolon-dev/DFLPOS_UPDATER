@@ -17,8 +17,10 @@
     <link rel="stylesheet"
           href="~/Vendor/fontawesome/css/font-awesome.min.css"
           asp-append-version="true" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" />
     <link rel="stylesheet" href="~/dist/css/vendor.bundle.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.3/skins/square/blue.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/dist/css/app.bundle.css" asp-append-version="true" />
 </head>
 
@@ -118,8 +120,10 @@
                 error: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(errorMessage))
             };
     </script>
-
+ 
     <script src="~/dist/js/vendor.bundle.min.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.3/icheck.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="~/dist/js/app.bundle.min.js" asp-append-version="true"></script>
 
     <!-- 10. Scripts propios de cada vista -->

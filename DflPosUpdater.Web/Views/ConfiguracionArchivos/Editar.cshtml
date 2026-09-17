@@ -2,79 +2,101 @@
 @{
     ViewData["Title"] = "Archivos de version";
 }
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h1 class="h3">Archivos de version @Model.NumeroVersion</h1>
-        <div class="text-muted">@Model.Descripcion</div>
-    </div>
-    <div class="d-flex gap-2">
-        <a class="btn btn-outline-secondary" asp-action="Index">Volver</a>
-        <a class="btn btn-outline-primary" asp-controller="Versiones" asp-action="Detalle" asp-route-id="@Model.VersionAppId">Ver version</a>
-    </div>
-</div>
-
-<form asp-action="Editar" method="post" enctype="multipart/form-data" class="card mb-4">
-    <input type="hidden" asp-for="VersionAppId" />
-    <div class="card-header">Agregar o reemplazar archivos</div>
-    <div class="card-body">
-        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label asp-for="Archivos" class="form-label"></label>
-                <input asp-for="Archivos" class="form-control" type="file" multiple />
-                <div class="form-text">Estos archivos se subiran dentro de la carpeta @Model.NumeroVersion.</div>
+<div class="normalheader transition animated fadeIn">
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="pull-right m-t-lg">
+                <ol class="hbreadcrumb breadcrumb">
+                    <li><a asp-action="Index">Volver</a></li>
+                    <li><a asp-controller="Versiones" asp-action="Detalle" asp-route-id="@Model.VersionAppId">Ver version</a></li>
+                </ol>
             </div>
-            <div class="col-md-4">
-                <label asp-for="SubcarpetaBase" class="form-label"></label>
-                <input asp-for="SubcarpetaBase" class="form-control" placeholder="Ej. lib, config. Vacio = raiz" />
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <div class="form-check mb-2">
-                    <input asp-for="SobrescribirExistentes" class="form-check-input" />
-                    <label asp-for="SobrescribirExistentes" class="form-check-label"></label>
-                </div>
-            </div>
+            <h2 class="font-light m-b-xs">
+                Configuracion de archivos
+            </h2>
+            <small>Archivos de version @Model.NumeroVersion</small>
         </div>
     </div>
-    <div class="card-footer text-end">
-        <button type="submit" class="btn btn-primary">Guardar archivos</button>
-    </div>
-</form>
+</div>
+<div class="content animate-panel">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel forum-box">
 
-<div class="card">
-    <div class="card-header">Archivos actuales</div>
-    <div class="table-responsive">
-        <table class="table table-hover table-sm mb-0 js-datatable">
-            <thead>
-            <tr>
-                <th>Ruta relativa</th>
-                <th>Tamano</th>
-                <th>Fecha carga</th>
-                <th>SHA256</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var archivo in Model.ArchivosActuales)
-            {
-                <tr>
-                    <td><code>@archivo.RutaRelativa</code></td>
-                    <td>@FormatBytes(archivo.TamanoBytes)</td>
-                    <td>@archivo.FechaCarga.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small text-break">@archivo.Sha256</td>
-                    <td class="text-end">
-                        <form asp-action="Eliminar" asp-route-id="@archivo.Id" method="post" data-confirm="true" data-confirm-title="Eliminar archivo" data-confirm-text="Se eliminara este archivo de la version." data-confirm-button="Si, eliminar">
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+                <div class="panel-heading">
+                    Agregar o reemplazar archivos
+                </div>
+                <form asp-action="Editar" method="post" enctype="multipart/form-data" class="card mb-4">
+                    <input type="hidden" asp-for="VersionAppId" />
+                    <div class="panel-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-group">                        
+                            <label asp-for="Archivos" class="form-label"></label>
+                            <input asp-for="Archivos" class="form-control" type="file" multiple />
+                            <div class="form-text">Estos archivos se subiran dentro de la carpeta @Model.NumeroVersion.</div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SubcarpetaBase" class="form-label"></label>
+                            <input asp-for="SubcarpetaBase" class="form-control" placeholder="Ej. lib, config. Vacio = raiz" />
+                        </div>                       
+                        <div class="form-group">
+                            <label asp-for="SobrescribirExistentes" class="form-check-label"></label>                          
+                          <input asp-for="SobrescribirExistentes" class="form-check-input" />
+                        </div>                       
+                        <button type="submit" class="btn btn-success btn-block">Guardar archivos</button>
+
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="hpanel forum-box">
+                    <div class="panel-heading hbuilt">
+                        Archivos actuales
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Ruta relativa</th>
+                                        <th>Tamano</th>
+                                        <th>Fecha carga</th>
+                                        <th>SHA256</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var archivo in Model.ArchivosActuales)
+                                    {
+                                        <tr>
+                                            <td><code>@archivo.RutaRelativa</code></td>
+                                            <td>@FormatBytes(archivo.TamanoBytes)</td>
+                                            <td>@archivo.FechaCarga.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td class="small text-break">@archivo.Sha256</td>
+                                            <td>
+                                                <form asp-action="Eliminar" asp-route-id="@archivo.Id" method="post" data-confirm="true" data-confirm-title="Eliminar archivo" data-confirm-text="Se eliminara este archivo de la version." data-confirm-button="Si, eliminar">
+                                                    <button type="submit" class="btn btn-xs btn-outline btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

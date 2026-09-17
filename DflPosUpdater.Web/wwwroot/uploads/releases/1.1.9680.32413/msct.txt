@@ -1,0 +1,152 @@
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `donation_sale` (
+  `donation_id` int(11) NOT NULL,
+  `site_code` varchar(6) NOT NULL,
+  `saleid` bigint(20) DEFAULT NULL,
+  `pos_id` int(11) NOT NULL,
+  `uid` varchar(100) NOT NULL,
+  `total` decimal(19,2) NOT NULL,
+  `partner_id` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `status` char(1) DEFAULT 'n',
+  `pm_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `donation_sale_detail`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `donation_sale_detail` (
+  `uid` varchar(100) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_qty` int(11) NOT NULL,
+  `item_unitprice` decimal(19,2) NOT NULL,
+  `item_totalprice` decimal(19,2) NOT NULL,
+  `status` char(1) DEFAULT 'n'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+DROP TABLE IF EXISTS `donationitem`;
+CREATE TABLE `donationitem` (
+  `donation_id` int(11) DEFAULT NULL,
+  `Id` int(11) NOT NULL,
+  `Description` varchar(100) NOT NULL,
+  `Price` decimal(19,2) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `donation_item_id_UNIQUE` (`Id`),
+  KEY `donationId_idx` (`donation_id`),
+  CONSTRAINT `donationId` FOREIGN KEY (`donation_id`) REFERENCES `donationcampaign` (`donation_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Articulos de donativos';
+
+
+DROP PROCEDURE IF EXISTS `sp_SaveDonationSale`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_SaveDonationSale`(IN _uid VARCHAR(100), IN _total DECIMAL(19,2), 
+IN _user_id INT, IN _fecha DATETIME, IN _donation_id INT, IN _site_code VARCHAR(6), IN _saleid BIGINT, IN _pos_id INT,
+	IN _pm_id int)
+BEGIN
+	INSERT INTO donation_sale (uid, total, partner_id, fecha, donation_id, site_code, saleid, pos_id, pm_id) VALUES 
+    (_uid, _total, _user_id, _fecha, _donation_id, _site_code, _saleid, _pos_id, _pm_id);
+END ;
+
+DROP PROCEDURE IF EXISTS `sp_SaveDonationSaleDetail`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_SaveDonationSaleDetail`(IN _uid VARCHAR(100), IN _item_id INT, IN _item_qty INT, IN _item_unitprice DECIMAL(19,2), IN _item_totalprice DECIMAL(19,2))
+BEGIN
+	INSERT INTO donation_sale_detail (uid, item_id, item_qty, item_unitprice, item_totalprice) VALUES
+		(_uid, _item_id, _item_qty, _item_unitprice, _item_totalprice);
+END;
+
+/*
+ALTER TABLE `incidents` ADD `timestamp` DATETIME;
+ALTER TABLE `incidents` ADD `status` CHAR(1) DEFAULT 'a';
+UPDATE `incidents` SET status='n' WHERE status IS NULL;
+*/
+DROP PROCEDURE IF EXISTS `sp_AddIncident`;
+CREATE DEFINER=`DFLPOS`@`%` PROCEDURE `sp_AddIncident`(IN _saleid BIGINT, IN _process VARCHAR(20), IN _description VARCHAR(100), IN _userid INT, IN _reference VARCHAR(100),  IN _auth_user_id INT, IN _timestamp DATETIME)
+BEGIN
+	INSERT INTO incidents (saleid, process, description, userid, reference, auth_user_id,timestamp) VALUES
+		(_saleid, _process, _description, _userid, _reference, _auth_user_id,_timestamp);
+END;
+
+/*
+ALTER TABLE `cardtransaction` ADD `pm_id` INT;
+*/
+DROP PROCEDURE IF EXISTS `sp_AddSaleCardTransaction`;
+CREATE DEFINER=`DFLPOS`@`%` PROCEDURE `sp_AddSaleCardTransaction`(IN _cardnumber VARCHAR(16), IN _responsecode VARCHAR(6), IN _responsemsg VARCHAR(100), 
+	IN _responsetext VARCHAR(100), IN _arqc VARCHAR(100), IN _aid VARCHAR(100), IN _requiresign INT, IN _expdate VARCHAR(6), IN _carddigits VARCHAR(4),
+    IN _merchantid VARCHAR(100), IN _authcode VARCHAR(100), IN _customername VARCHAR(100), IN _cardnature VARCHAR(30), IN _posentrymode VARCHAR(30),
+    IN _bankentity VARCHAR(20), IN _apn VARCHAR(30), IN _al VARCHAR(30), IN _tsi VARCHAR(30), IN _tvr VARCHAR(30), IN _cardtypename VARCHAR(10),
+    IN _bankname VARCHAR(20), IN _reference VARCHAR(100), IN _referenceorigin VARCHAR(100), IN _producttype VARCHAR(10), IN _operationtype VARCHAR(10),
+    IN _amount DECIMAL(19,2), IN _comision DECIMAL(19,2), IN _cashback DECIMAL(19,2), IN _userid INT, IN _transactiondate DATETIME,
+    IN _terminalid VARCHAR(30), IN _orderid VARCHAR(100), IN _saleid BIGINT, IN _status CHAR(1),_sitecode varchar(6), _posid varchar(6),_operationmode varchar(1),_pm_id int)
+BEGIN
+	INSERT INTO `dflpos`.`cardtransaction`(`cardnumber`,`responsecode`,`responsemsg`,`responsetext`,`arqc`,`aid`,`requiresign`,`expdate`,
+		`carddigits`,`merchantid`,`authcode`,`customername`,`cardnature`,`posentrymode`,`bankentity`,`apn`,`al`,`tsi`,`tvr`,`cardtypename`,
+		`bankname`,`reference`,`referenceorigin`,`producttype`,`operationtype`,`amount`,`comision`,`cashback`,`userid`,`transactiondate`,
+		`terminalid`,`orderid`,`saleid`,`status`,`site_code`,`posid`,`operationmode`,`pm_id`)
+	VALUES
+	(_cardnumber, _responsecode, _responsemsg, _responsetext, _arqc, _aid, _requiresign, _expdate, _carddigits, _merchantid, _authcode, _customername, 
+    _cardnature, _posentrymode, _bankentity, _apn, _al, _tsi, _tvr, _cardtypename, _bankname, _reference, _referenceorigin, _producttype,_operationtype,_amount,
+    _comision,_cashback, _userid, _transactiondate, _terminalid, _orderid, _saleid, _status,_sitecode, _posid,_operationmode,_pm_id);
+
+	SELECT 1 AS ReturnValue;
+END;
+
+DROP PROCEDURE IF EXISTS `sp_SaveSale`;
+CREATE DEFINER=`DFLPOS`@`%` PROCEDURE `sp_SaveSale`(IN _saleid BIGINT, IN _saledate DATETIME, IN _saletotal DECIMAL(19,2), IN _saletax DECIMAL(19,2), 
+	IN _salesubtotal DECIMAL(19,2), IN _salediscount DECIMAL(19,2), IN _totalcost DECIMAL(19,2), IN _customerid BIGINT, IN _userid INT,
+    IN _currencyrate DECIMAL(10,2), IN _status CHAR(1), IN _customercard BIGINT, IN _posid VARCHAR(6), IN _sitecode VARCHAR(6),IN _tribu_customer VARCHAR(10))
+BEGIN
+	DECLARE _returnvalue BIGINT;
+    DECLARE _count INT;
+    SET _returnvalue = 0;
+    -- VERIFICAMOS QUE LA VENTA NO EXISTA YA
+    IF(SELECT 1 = 1 FROM `dflpos`.`sale` WHERE `saleid`=_saleid) THEN
+		BEGIN
+			SET _returnvalue = -1;
+		END;
+	ELSE
+		BEGIN
+			INSERT INTO `dflpos`.`sale` (`saleid`,`saledate`,`saletotal`,`saletax`,`salesubtotal`,`salediscount`,`totalcost`,
+									`customerid`,`userid`,`CurrencyRate`,`status`,`customercard`,`posid`,`sitecode`,`tribu_customer`)
+			VALUES	
+					(_saleid, _saledate, _saletotal, _saletax, _salesubtotal, _salediscount, _totalcost, _customerid, _userid, _currencyrate, _status,
+					_customercard, _posid, _sitecode,_tribu_customer);
+			SET _returnvalue = _saleid;
+        END;
+	END IF;
+    SELECT _returnvalue AS ReturnValue;
+END;
+
+DROP PROCEDURE IF EXISTS `sp_AddSaleDetail`;
+CREATE DEFINER=`DFLPOS`@`%` PROCEDURE `sp_AddSaleDetail`(IN _saleid BIGINT, IN _item_id VARCHAR(20), IN _quantity DECIMAL(19,2), IN _price DECIMAL(19,2), 
+		IN _tax DECIMAL(19,2),IN _tax_percent DECIMAL(19,2), IN _total DECIMAL(19,2), IN _totaldiscount DECIMAL(19,2),IN _barcode VARCHAR(50), 
+        IN _cost DECIMAL(19,2),IN _lastcost DECIMAL(19,2), IN _status CHAR(1), IN _transid INT, IN _priceoriginal DECIMAL(19,2), IN _tribu_promo CHAR(1))
+BEGIN
+	
+	IF(SELECT 1 = 1 FROM `dflpos`.`saledetail` WHERE `saleid`=_saleid AND `item_id`=_item_id AND `transid`=_transid) THEN
+		BEGIN
+			SELECT 1 AS ReturnValue;
+		END;
+	ELSE
+		BEGIN
+			INSERT INTO `dflpos`.`saledetail`(`saleid`,`item_id`,`quantity`,`price`,`tax`,`tax_percent`,`total`,`totaldiscount`,`barcode`,`cost`,
+			`lastcost`,`status`,`transid`,`priceoriginal`,`tribu_promo`)
+			VALUES (_Saleid, _item_id, _quantity, _price, _tax, _tax_percent, _total, _totaldiscount, _barcode, _cost, _lastcost, _status,_transid,_priceoriginal,_tribu_promo);
+			SELECT 1 AS ReturnValue;
+		END;
+	END IF;
+END;
+
+DROP PROCEDURE IF EXISTS `sp_AddSalePayment`;
+CREATE DEFINER=`DFLPOS`@`%` PROCEDURE `sp_AddSalePayment`(IN _saleid BIGINT, IN _pm_id INT, IN _amount DECIMAL(19,2), IN _total_amount DECIMAL(19,2), 
+	IN _comision DECIMAL(19,2),IN _comision_tax DECIMAL(19,2), IN _status CHAR(1), IN _userId INT, IN _inalambrica CHAR(1) )
+BEGIN
+	INSERT INTO `dflpos`.`salepm`(`saleid`,`pm_id`,`amount`,`total_amount`,`comision`,`comision_tax`,`status`,`userId`,`inalambrica`)
+	VALUES (_saleid, _pm_id, _amount, _total_amount, _comision, _comision_tax, _status,_userId,_inalambrica);
+	SELECT 1 AS ReturnValue;
+END;

@@ -2,94 +2,142 @@
 @{
     ViewData["Title"] = "Detalle de version";
 }
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h1 class="h3">Version @Model.Version.NumeroVersion</h1>
-        <div class="text-muted">@Model.Version.Descripcion</div>
-    </div>
-    <div class="d-flex gap-2">
-        <a class="btn btn-outline-primary" asp-controller="ConfiguracionArchivos" asp-action="Editar" asp-route-id="@Model.Version.Id">Configurar archivos</a>
-        <form asp-action="Publicar" asp-route-id="@Model.Version.Id" method="post" data-confirm="true" data-confirm-title="Publicar version" data-confirm-text="Se crearan despliegues para las sucursales activas." data-confirm-button="Si, publicar">
-            <button type="submit" class="btn btn-success">Publicar a sucursales activas</button>
-        </form>
+<div class="normalheader transition animated fadeIn">
+    <div class="hpanel">
+        <div class="panel-body">
+            <h2 class="font-light m-b-xs">
+                Versiones
+            </h2>
+            <small>Detalle de version </small>
+        </div>
     </div>
 </div>
 
-<div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Estado</div><div class="fw-bold">@Model.Version.Estado</div></div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Archivos</div><div class="fw-bold">@Model.Version.TotalArchivos</div></div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Tamano total</div><div class="fw-bold">@FormatBytes(Model.Version.TamanoBytes)</div></div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Publicacion</div><div class="fw-bold">@Model.Version.FechaPublicacion?.ToString("yyyy-MM-dd HH:mm")</div></div></div></div>
+<div class="content animate-panel">   
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="hpanel hgreen">
+                <div class="panel-heading">
+                    <div class="panel-tools">                                          
+                    </div>
+                    Version
+                </div>
+                <div class="panel-body list">
+
+                    <div class="pull-right">
+                        @* <a href="#" class="btn btn-xs btn-default">Today</a> *@
+                        
+                        <form asp-action="Publicar" asp-route-id="@Model.Version.Id" method="post">
+                            <a class="btn btn-xs btn-primary" asp-controller="ConfiguracionArchivos" asp-action="Editar" asp-route-id="@Model.Version.Id">Configurar archivos</a>
+                            <button type="submit" class="btn btn-xs btn-success">Publicar a sucursales activas</button>
+                        </form>
+                        @* <a class="btn btn-xs btn-success" asp-controller="ConfiguracionArchivos" asp-action="Publicar" asp-route-id="@Model.Version.Id" method="post">Publicar a sucursales activas</a> *@
+                    </div>
+                    <div class="panel-title"> <h4>@Model.Version.NumeroVersion</h4></div>
+                    <p>
+                        @Model.Version.Descripcion
+                    </p>                         
+
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-3 border-right"> <div class="contact-stat"><span>Estado</span> <strong>@Model.Version.Estado</strong></div> </div>
+                        <div class="col-md-3 border-right"> <div class="contact-stat"><span>Archivos: </span> <strong>@Model.Version.TotalArchivos</strong></div> </div>
+                        <div class="col-md-3"> <div class="contact-stat"><span>Tamano total </span> <strong>@FormatBytes(Model.Version.TamanoBytes)</strong></div> </div>
+                        <div class="col-md-3"> <div class="contact-stat"><span>Publicacion </span> <strong>@Model.Version.FechaPublicacion?.ToString("yyyy-MM-dd HH:mm")</strong></div> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="hpanel horange">
+                <div class="panel-heading">
+                    <div class="panel-tools">                      
+                    </div>
+                    Archivos configurados
+                </div>
+                <div class="panel-body list">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0 js-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Archivo</th>
+                                    <th>Tamano</th>
+                                    <th>SHA256</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var archivo in Model.Version.Archivos.OrderBy(x => x.RutaRelativa))
+                                {
+                                    <tr>
+                                        <td><code>@archivo.RutaRelativa</code></td>
+                                        <td>@FormatBytes(archivo.TamanoBytes)</td>
+                                        <td class="small text-break">@archivo.Sha256</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="hpanel hblue">
+                <div class="panel-heading">
+                    <div class="panel-tools">                       
+                    </div>
+                    Despliegues por sucursal
+                </div>
+                <div class="panel-body list">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 js-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Sucursal</th>
+                                    <th>Estado</th>
+                                    <th>Intentos</th>
+                                    <th>Inicio</th>
+                                    <th>Fin</th>
+                                    <th>Error</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Despliegues)
+                                {
+                                    <tr>
+                                        <td>@item.Sucursal?.Nombre</td>
+                                        <td><span class="@CssEstado(item.Estado)">@item.Estado</span></td>
+                                        <td>@item.Intentos</td>
+                                        <td>@item.FechaInicio?.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>@item.FechaFin?.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td class="text-danger small">@item.MensajeError</td>
+                                        <td><a asp-controller="Despliegues" asp-action="Detalle" asp-route-id="@item.Id">Ver logs</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
 </div>
 
-<div class="card mb-4">
-    <div class="card-header">Archivos configurados</div>
-    <div class="table-responsive">
-        <table class="table table-sm table-hover mb-0 js-datatable">
-            <thead>
-            <tr>
-                <th>Ruta relativa</th>
-                <th>Tamano</th>
-                <th>SHA256</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var archivo in Model.Version.Archivos.OrderBy(x => x.RutaRelativa))
-            {
-                <tr>
-                    <td><code>@archivo.RutaRelativa</code></td>
-                    <td>@FormatBytes(archivo.TamanoBytes)</td>
-                    <td class="small text-break">@archivo.Sha256</td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">Despliegues por sucursal</div>
-    <div class="table-responsive">
-        <table class="table table-hover mb-0 js-datatable">
-            <thead>
-            <tr>
-                <th>Sucursal</th>
-                <th>Estado</th>
-                <th>Intentos</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-                <th>Error</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.Despliegues)
-            {
-                <tr>
-                    <td>@item.Sucursal?.Nombre</td>
-                    <td><span class="badge @CssEstado(item.Estado)">@item.Estado</span></td>
-                    <td>@item.Intentos</td>
-                    <td>@item.FechaInicio?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@item.FechaFin?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="text-danger small">@item.MensajeError</td>
-                    <td><a asp-controller="Despliegues" asp-action="Detalle" asp-route-id="@item.Id">Ver logs</a></td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-</div>
 
 @functions {
     string CssEstado(DespliegueEstado estado) => estado switch
     {
-        DespliegueEstado.Exitoso => "text-bg-success",
-        DespliegueEstado.Fallido => "text-bg-danger",
-        DespliegueEstado.EnProceso => "text-bg-warning",
-        DespliegueEstado.Reintentando => "text-bg-info",
-        DespliegueEstado.Cancelado => "text-bg-secondary",
-        _ => "text-bg-light text-dark"
+        DespliegueEstado.Exitoso => "label label-success",
+        DespliegueEstado.Fallido => "label label-danger",
+        DespliegueEstado.EnProceso => "label label-info",
+        DespliegueEstado.Reintentando => "label label-warning",
+        DespliegueEstado.Cancelado => "label label-danger2",
+        _ => "label label-primary"
     };
 
     string FormatBytes(long bytes)

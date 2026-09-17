@@ -3,65 +3,149 @@
     ViewData["Title"] = "Detalle de despliegue";
     var despliegue = Model.Despliegue;
 }
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h1 class="h3">Despliegue #@despliegue.Id</h1>
-        <div class="text-muted">@despliegue.VersionApp?.NumeroVersion - @despliegue.Sucursal?.Nombre</div>
+<div class="normalheader transition animated fadeIn">
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="pull-right m-t-lg">
+                <ol class="hbreadcrumb breadcrumb">
+                    <li><a asp-action="Index">Volver</a></li>                    
+                </ol>
+            </div>
+            <h2 class="font-light m-b-xs">
+                @* Despliegues *@
+                Despliegue #@despliegue.Id
+            </h2>
+            <small>@despliegue.VersionApp?.NumeroVersion - @despliegue.Sucursal?.Nombre </small>
+        </div>
     </div>
-    <div class="d-flex gap-2">
-        <form asp-action="Reintentar" asp-route-id="@despliegue.Id" method="post" data-confirm="true" data-confirm-title="Reintentar despliegue" data-confirm-text="Se volvera a ejecutar el job de esta sucursal." data-confirm-button="Si, reintentar">
-            <button type="submit" class="btn btn-warning">Reintentar</button>
-        </form>
-        <form asp-action="Cancelar" asp-route-id="@despliegue.Id" method="post" data-confirm="true" data-confirm-title="Cancelar despliegue" data-confirm-text="El despliegue quedara marcado como cancelado." data-confirm-button="Si, cancelar">
-            <button type="submit" class="btn btn-outline-danger">Cancelar</button>
-        </form>
+</div>
+<div class="content animate-panel">
+    <div class="row projects">       
+        <div class="col-lg-12">
+            <div class="hpanel">
+                <div class="panel-heading hbuilt">
+                    <div class="pull-right">
+                        <div class="col-lg-12">
+                        </div>
+                        <a class="btn btn-warning btn-xs">Reintentar</a>
+                        <a class="btn btn-outline btn-danger btn-xs">Cancelar</a>
+                       @*  <form asp-action="Reintentar" asp-route-id="@despliegue.Id" method="post" data-confirm="true" data-confirm-title="Reintentar despliegue" data-confirm-text="Se volvera a ejecutar el job de esta sucursal." data-confirm-button="Si, reintentar">
+                            <button type="submit" class="btn btn-warning btn-xs">Reintentar</button>
+                        </form>
+                        <form asp-action="Cancelar" asp-route-id="@despliegue.Id" method="post" data-confirm="true" data-confirm-title="Cancelar despliegue" data-confirm-text="El despliegue quedara marcado como cancelado." data-confirm-button="Si, cancelar">
+                            <button type="submit" class="btn btn-outline btn-danger btn-xs">Cancelar</button>
+                        </form> *@
+                    </div>
+                    Despliegue #@despliegue.Id
+                </div>
+                <div class="panel-body">
+                    <div class="row text-center">
+                        <div class="col-sm-3">
+                            <div class="project-label">ESTADO</div>
+                            <small><span class="@CssEstado(@despliegue.Estado)">@despliegue.Estado</span></small>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="project-label">INTENTOS</div>
+                            <small>@despliegue.Intentos</small>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="project-label">JOB HANGFIRE</div>
+                            <small>@despliegue.HangfireJobId</small>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="project-label">FIN</div>
+                            <small>@despliegue.FechaFin?.ToString("yyyy-MM-dd HH:mm")</small>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    @despliegue.VersionApp?.NumeroVersion - @despliegue.Sucursal?.Nombre
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(despliegue.MensajeError))
+    {
+        <div class="alert alert-danger"><strong>Error:</strong> @despliegue.MensajeError</div>
+    }
+    
+
+    <div class="hpanel forum-box">
+
+        <div class="panel-heading">           
+            Rutas remotas
+        </div>
+
+        <div class="panel-body">
+            <div class="row text-center">
+
+                <div class="col-md-6 forum-heading">
+                         <h4>Carpeta version</h4>
+                    <div class="desc"><code>@(despliegue.RutaRemotaCarpeta ?? despliegue.RutaRemotaZip)</code></div>
+                </div>  
+                <div class="col-md-6 forum-heading">
+                    <a href="/forum_details"><h4>Manifest</h4></a>
+                    <div class="desc"> <code>@despliegue.RutaRemotaManifest</code></div>
+                </div>
+            </div>
+        </div>      
+
+    </div>
+    <div class="hpanel forum-box">
+
+        <div class="panel-heading">
+           Logs
+        </div>
+      
+        <div class="panel-body">
+            <div class="animate-panel" data-effect="zoomIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0 js-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                        <th>Mensaje</th>
+                                        <th>Detalle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var log in Model.Logs)
+                                    {
+                                        <tr>
+                                            <td>@log.Fecha.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                            <td>@log.Tipo</td>
+                                            <td>@log.Mensaje</td>
+                                            <td>@log.Detalle</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Estado</div><div class="fw-bold">@despliegue.Estado</div></div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Intentos</div><div class="fw-bold">@despliegue.Intentos</div></div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Job Hangfire</div><div class="fw-bold">@despliegue.HangfireJobId</div></div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Fin</div><div class="fw-bold">@despliegue.FechaFin?.ToString("yyyy-MM-dd HH:mm")</div></div></div></div>
-</div>
 
-@if (!string.IsNullOrWhiteSpace(despliegue.MensajeError))
-{
-    <div class="alert alert-danger"><strong>Error:</strong> @despliegue.MensajeError</div>
+
+
+
+@functions {
+    string CssEstado(DespliegueEstado estado) => estado switch
+    {
+        DespliegueEstado.Exitoso => "label label-success",
+        DespliegueEstado.Fallido => "label label-danger",
+        DespliegueEstado.EnProceso => "label label-info",
+        DespliegueEstado.Reintentando => "label label-warning",
+        DespliegueEstado.Cancelado => "label label-danger2",
+        _ => "label label-primary"
+    };
 }
 
-<div class="card mb-4">
-    <div class="card-header">Rutas remotas</div>
-    <div class="card-body">
-        <div><strong>Carpeta version:</strong> <code>@(despliegue.RutaRemotaCarpeta ?? despliegue.RutaRemotaZip)</code></div>
-        <div><strong>Manifest:</strong> <code>@despliegue.RutaRemotaManifest</code></div>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">Logs</div>
-    <div class="table-responsive">
-        <table class="table table-sm table-hover mb-0 js-datatable">
-            <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Mensaje</th>
-                <th>Detalle</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var log in Model.Logs)
-            {
-                <tr>
-                    <td>@log.Fecha.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                    <td>@log.Tipo</td>
-                    <td>@log.Mensaje</td>
-                    <td><pre class="small mb-0">@log.Detalle</pre></td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-</div>
