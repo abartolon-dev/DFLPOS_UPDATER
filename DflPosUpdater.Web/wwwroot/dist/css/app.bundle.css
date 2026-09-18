@@ -1778,8 +1778,8 @@ h3,
     padding: 0;
     width: 22px;
     height: 22px;
-    background: url("#Y.Net\ActualizadorPOS\VersionEnCapas\DflPosUpdaterCapas\DflPosUpdater.Web\wwwroot\Content\img\green.png") no-repeat;
-    /*background: url("#Y.Net\ActualizadorPOS\VersionEnCapas\DflPosUpdaterCapas\DflPosUpdater.Web\wwwroot\Content\img\green.png") no-repeat;*/
+    background: url("../../Content/img/green.png") no-repeat;
+    /*background: url("../../Content/img/green.png") no-repeat;*/
     border: none;
     cursor: pointer;
 }
@@ -1829,7 +1829,7 @@ h3,
 @media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
     .icheckbox_square-green,
     .iradio_square-green {
-        background-image: url("#Y.Net\ActualizadorPOS\VersionEnCapas\DflPosUpdaterCapas\DflPosUpdater.Web\wwwroot\Content\img\green@2x.png");
+        background-image: url("../../Content/img/green@2x.png");
         -webkit-background-size: 240px 24px;
         background-size: 240px 24px;
     }
@@ -4296,7 +4296,7 @@ ul.h-list {
 }
 
 .landing-page header {
-    background: url('#Y.Net\ActualizadorPOS\VersionEnCapas\DflPosUpdaterCapas\DflPosUpdater.Web\wwwroot\images\landing\header.jpg') 50% 0 no-repeat;
+    background: url('../../images/landing/header.jpg') 50% 0 no-repeat;
     height: 480px;
     padding-top: 50px;
     margin-bottom: 30px;
@@ -6224,7 +6224,7 @@ h3,
     padding: 0;
     width: 22px;
     height: 22px;
-    background: url("#Y.Net\ActualizadorPOS\VersionEnCapas\DflPosUpdaterCapas\DflPosUpdater.Web\wwwroot\css\img\green.png") no-repeat;
+    background: url("../../css/img/green.png") no-repeat;
     border: none;
     cursor: pointer;
 }
@@ -6274,7 +6274,7 @@ h3,
 @media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
     .icheckbox_square-green,
     .iradio_square-green {
-        background-image: url("#Y.Net\ActualizadorPOS\VersionEnCapas\DflPosUpdaterCapas\DflPosUpdater.Web\wwwroot\css\img\green@2x.png");
+        background-image: url("../../css/img/green@2x.png");
         -webkit-background-size: 240px 24px;
         background-size: 240px 24px;
     }
@@ -8741,7 +8741,7 @@ ul.h-list {
 }
 
 .landing-page header {
-    background: url('#Y.Net\ActualizadorPOS\VersionEnCapas\DflPosUpdaterCapas\DflPosUpdater.Web\wwwroot\images\landing\header.jpg') 50% 0 no-repeat;
+    background: url('../../images/landing/header.jpg') 50% 0 no-repeat;
     height: 480px;
     padding-top: 50px;
     margin-bottom: 30px;
